@@ -1,28 +1,23 @@
-permissions:
-  contents: write
-  checks: write
-  pull-requests: write
-
 name: example
 on:
   schedule:
     - cron: '*/1 * * * *'
-  workflow_dispatch:   # ✅ 新增：手動觸發
+  workflow_dispatch:   # ✅ 建議加，方便手動觸發
 
 jobs:
   job:
     runs-on: ubuntu-latest
     timeout-minutes: 1
     strategy:
-      fail-fast: false
+      fail-fast: false    # ← 和 matrix 對齊
       matrix:
-        seat-id: [525, 527, 529]
+        seat-id: [525,529]
     steps:
       - name: Check Tickets
         uses: mooyoul/melon-ticket-actions@v1.1.0
-        continue-on-error: true
+        continue-on-error: true 
         with:
-          product-id: 211558
+          product-id: 211541
           schedule-id: 100003
           seat-id: ${{ matrix.seat-id }}
           slack-incoming-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
